@@ -1,4 +1,4 @@
-package es.ejemplo.primermicro;
+package es.ejemplo.primermicro.EmpleadoRepositoryMockTest;
 
 import es.ejemplo.primermicro.entity.CentroEntity;
 import es.ejemplo.primermicro.entity.EmpleadoEntity;

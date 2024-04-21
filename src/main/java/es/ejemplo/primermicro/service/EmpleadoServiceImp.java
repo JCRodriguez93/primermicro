@@ -28,6 +28,17 @@ public class EmpleadoServiceImp implements EmpleadoService {
     }
 
     @Override
+    public List<EmpleadoEntity> getEmpleadoByNombre(String nombre) {
+        return empleadoRepository.findByNombre(nombre).stream().toList();
+
+    }
+
+    @Override
+    public List<EmpleadoEntity> getEmpleadoByIdCentro(Integer id) {
+        return empleadoRepository.findByIdCentro(id);
+    }
+
+    @Override
     public EmpleadoEntity createEmpleado(EmpleadoEntity empleado) {
         return empleadoRepository.save(empleado);
     }

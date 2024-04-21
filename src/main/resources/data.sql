@@ -15,7 +15,7 @@ VALUES
 -- Insertar datos en la tabla EMPLEADOS
 INSERT INTO EMPLEADOS (ID_EMPLEADO, NOMBRE, ID_CENTRO)
 VALUES
-(1, 'Juan Pérez', 101),
+(1, 'Juan', 101),
 (2, 'Ahmed Mohammed', 106),
 (3, 'Yuki Tanaka', 104),
 (4, 'Juan García', 103),

@@ -18,13 +18,13 @@ public class EmpleadoEntity {
 
     @Id
     @Column(name = "ID_EMPLEADO")
-    private int idEmpleado;
+    private Integer idEmpleado;
 
     @Column(name = "NOMBRE")
     private String nombre;
 
     @Column(name = "ID_CENTRO")
-    private int idCentro;
+    private Integer idCentro;
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "ID_CENTRO", referencedColumnName = "NUM_CENTRO", insertable = false, updatable = false)
     private CentroEntity centro;

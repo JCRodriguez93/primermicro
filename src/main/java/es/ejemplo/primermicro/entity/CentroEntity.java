@@ -21,7 +21,7 @@ import org.springframework.validation.annotation.Validated;
 public class CentroEntity {
     @Id
     @Column(name = "NUM_CENTRO")
-    private int numCentro;
+    private Integer numCentro;
     @Column(name = "NOMBRE_CENTRO")
     private String nombreCentro;
 

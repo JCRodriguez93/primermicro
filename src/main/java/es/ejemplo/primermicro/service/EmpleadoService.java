@@ -10,6 +10,10 @@ public interface EmpleadoService {
 
     public EmpleadoEntity getEmpleadoById(Integer id);
 
+    public List<EmpleadoEntity> getEmpleadoByNombre(String nombre);
+
+    public List<EmpleadoEntity> getEmpleadoByIdCentro(Integer id);
+
     public EmpleadoEntity createEmpleado(EmpleadoEntity empleado);
 
     public EmpleadoEntity updateEmpleado(Integer id, EmpleadoEntity empleado);
