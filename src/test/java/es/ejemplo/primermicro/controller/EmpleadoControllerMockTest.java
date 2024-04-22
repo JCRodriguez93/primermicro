@@ -163,6 +163,7 @@ public class EmpleadoControllerMockTest {
         // Configuramos Mockito para que devuelva el empleado que se eliminará cuando se llame al método deleteEmpleado
         when(empleadoService.deleteEmpleado(1)).thenReturn(empleado);
 
+
         // Act
         ResponseEntity<EmpleadoEntity> response = empleadoController.deleteEmpleado(1);
 
