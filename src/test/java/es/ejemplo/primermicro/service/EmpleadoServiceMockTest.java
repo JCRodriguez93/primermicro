@@ -39,17 +39,17 @@ public class EmpleadoServiceMockTest {
     }
 
     @Test
-    public void returnAllEmployees() {
+    public void returnAllEmployeesTest() {
         List<EmpleadoEntity> encontrado = empleadoRepository.findAll();
         Assertions.assertThat(!encontrado.isEmpty());
     }
     @Test
-    public void whenValidGetIdThenReturnEmployee() {
+    public void whenValidGetIdThenReturnEmployeeTest() {
         EmpleadoEntity encontrado = empleadoService.getEmployeeById(1);
         Assertions.assertThat(encontrado.getNombre()).isEqualTo("Margarita");
     }
     @Test
-    public void whenCreateEmployeeThenReturnNotNull() {
+    public void whenCreateEmployeeThenReturnNotNullTest() {
         EmpleadoEntity empleadoEntity = EmpleadoEntity.builder()
                 .idEmpleado(1)
                 .nombre("Margarita")
@@ -72,8 +72,7 @@ public class EmpleadoServiceMockTest {
 
 
     @Test
-    public void whenDeleteEmployeeThenReturnNull() {
-        // Arrange
+    public void whenDeleteEmployeeThenReturnNullTest() {
         EmpleadoEntity empleadoEntity = EmpleadoEntity.builder()
                 .idEmpleado(1)
                 .nombre("Margarita")
@@ -83,19 +82,14 @@ public class EmpleadoServiceMockTest {
                         .build())
                 .build();
 
-        // Se guarda el empleado en la base de datos ficticia
         empleadoRepository.save(empleadoEntity);
-
-        // Act: Eliminar al empleado
         empleadoService.deleteEmployee(empleadoEntity.getIdEmpleado());
-
-        // Assert: Verificar que el empleado ya no existe en la base de datos
         assertFalse(empleadoRepository.existsById(1), "El empleado debería haber sido eliminado correctamente de la base de datos");
     }
 
 
     @Test
-    public void updateNameAndIdCenterOfEmployeeWhenIdProvided() {
+    public void updateNameAndIdCenterOfEmployeeWhenIdProvidedTest() {
 
         EmpleadoEntity actual = empleadoService.getEmployeeById(1);
         EmpleadoEntity empleadoActualizado = empleadoService.getEmployeeById(1);

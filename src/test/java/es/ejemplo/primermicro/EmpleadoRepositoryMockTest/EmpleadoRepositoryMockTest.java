@@ -19,7 +19,7 @@ public class EmpleadoRepositoryMockTest {
     private EmpleadoRepository empleadoRepository;
 
     @Test
-    public void findEmpleadoById() {
+    public void getEmployeeByIdTest() {
         EmpleadoEntity buscado = EmpleadoEntity.builder()
                 .idEmpleado(1)
                 .nombre("Margarita Gonzalez")
@@ -29,11 +29,8 @@ public class EmpleadoRepositoryMockTest {
                         .build())
                 .build();
 
-        // Configuración del comportamiento simulado del repositorio
         Mockito.when(empleadoRepository.findById(buscado.getIdEmpleado())).thenReturn(Optional.of(buscado));
-        // Lógica de la prueba
         Optional<EmpleadoEntity> encontrado = empleadoRepository.findById(buscado.getIdEmpleado());
-        // Verificación de la prueba
         Assertions.assertTrue(encontrado.isPresent(), "Se esperaba encontrar un empleado con el ID proporcionado");
         EmpleadoEntity empleadoEncontrado = encontrado.get();
         Assertions.assertEquals(buscado.getIdEmpleado(), empleadoEncontrado.getIdEmpleado(),
@@ -41,8 +38,7 @@ public class EmpleadoRepositoryMockTest {
     }
 
     @Test
-    public void findEmpleadoByName() {
-        // Configuración del objeto empleado simulado
+    public void findEmployeeByNameTest() {
         String nombreBuscado = "Margarita Gonzalez";
         EmpleadoEntity buscado = EmpleadoEntity.builder()
                 .idEmpleado(1)
@@ -53,15 +49,10 @@ public class EmpleadoRepositoryMockTest {
                         .build())
                 .build();
 
-        // Configuración del comportamiento simulado del repositorio
         List<EmpleadoEntity> listaSimulada = new ArrayList<>();
         listaSimulada.add(buscado);
         Mockito.when(empleadoRepository.findByNombre(nombreBuscado)).thenReturn(listaSimulada);
-
-        // Lógica de la prueba
         List<EmpleadoEntity> encontrados = empleadoRepository.findByNombre(nombreBuscado);
-
-        // Verificación de la prueba
         Assertions.assertFalse(encontrados.isEmpty(), "Se esperaba encontrar al menos un empleado con el nombre proporcionado");
         EmpleadoEntity empleadoEncontrado = encontrados.get(0);
         Assertions.assertEquals(nombreBuscado, empleadoEncontrado.getNombre(),
@@ -69,7 +60,7 @@ public class EmpleadoRepositoryMockTest {
     }
 
     @Test
-    public void findEmpleadoByCenter() {
+    public void findEmployeeByIdCenterTest() {
         // Configuración del objeto empleado simulado
         int numCentroBuscado = 101;
         EmpleadoEntity buscado = EmpleadoEntity.builder()
@@ -81,15 +72,10 @@ public class EmpleadoRepositoryMockTest {
                         .build())
                 .build();
 
-        // Configuración del comportamiento simulado del repositorio
         List<EmpleadoEntity> listaSimulada = new ArrayList<>();
         listaSimulada.add(buscado);
         Mockito.when(empleadoRepository.findByIdCentro(numCentroBuscado)).thenReturn(listaSimulada);
-
-        // Lógica de la prueba
         List<EmpleadoEntity> encontrados = empleadoRepository.findByIdCentro(numCentroBuscado);
-
-        // Verificación de la prueba
         Assertions.assertFalse(encontrados.isEmpty(), "Se esperaba encontrar al menos un empleado con el centro proporcionado");
         EmpleadoEntity empleadoEncontrado = encontrados.get(0);
         Assertions.assertEquals(numCentroBuscado, empleadoEncontrado.getCentro().getNumCentro(),

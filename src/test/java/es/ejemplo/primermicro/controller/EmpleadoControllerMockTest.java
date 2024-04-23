@@ -7,15 +7,17 @@ import es.ejemplo.primermicro.service.EmpleadoService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.exceptions.base.MockitoException;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -34,8 +36,8 @@ public class EmpleadoControllerMockTest {
     private EmpleadoController empleadoController;
 
     @Test
-    public void getAllEmpleadosTest() {
-        // Arrange
+    public void getAllEmployeesTest() {
+
         List<EmpleadoEntity> empleados = new ArrayList<>();
         empleados.add(new EmpleadoEntity());
         empleados.add(new EmpleadoEntity());
@@ -49,7 +51,7 @@ public class EmpleadoControllerMockTest {
     }
 
     @Test
-    public void getEmpleadosById_When_EmpleadoExists_Returns_Empleado() {
+    public void getEmployeeByIdWhenEmployeeExistsThenReturnsEmployeeTest() {
         EmpleadoEntity empleado = new EmpleadoEntity();
         when(empleadoService.getEmployeeById(1)).thenReturn(empleado);
 
@@ -59,9 +61,20 @@ public class EmpleadoControllerMockTest {
         assertEquals(empleado, response.getBody());
     }
 
+    @Test
+    public void getEmployeeByIdWhenEmployeeDoesNotExistThenReturnsNotFoundTest() {
+        when(empleadoService.getEmployeeById(1)).thenReturn(null);
+
+        ResponseEntity<EmpleadoEntity> response = empleadoController.getEmployeesById(1);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody());
+    }
+
+
 
     @Test
-    public void getEmpleadosByName_When_EmpleadoExist_Returns_Empleados() {
+    public void getEmployeesByNameWhenEmployeesExistThenReturnsEmployeeTest() {
         CentroEntity centro = new CentroEntity(101,"IBM");
         EmpleadoEntity empleado1 = new EmpleadoEntity(1,"Juan",101, centro);
         EmpleadoEntity empleado2 = new EmpleadoEntity(2,"Jorge Juan",101, centro);
@@ -77,41 +90,45 @@ public class EmpleadoControllerMockTest {
         ResponseEntity<List<EmpleadoEntity>> response = empleadoController.getEmployeesByName("Juan");
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(3, response.getBody().size()); // Verifica que se devuelva una lista con al menos un empleado
+        assertEquals(3, response.getBody().size());
     }
 
     @Test
-    public void getEmpleadosByCenter_When_EmpleadoExist_Returns_Empleados() {
-        // Arrange
-        CentroEntity centro = new CentroEntity();
-        centro.setNumCentro(101); // Configuramos el ID del centro
+    public void getEmployeesByCenterIdWhenEmployeeAreAssociatedThenReturnsEmployeesTest() {
+        CentroEntity centro = CentroEntity.builder().nombreCentro("Accenture").numCentro(101).build();
 
         List<EmpleadoEntity> empleados = new ArrayList<>();
         EmpleadoEntity empleado1 = new EmpleadoEntity(1,"Juan",centro.getNumCentro(),centro);
         EmpleadoEntity empleado2 = new EmpleadoEntity(2,"Jose",centro.getNumCentro(),centro);
 
-        empleados.add(empleado1); // Puedes agregar más empleados si es necesario
+        empleados.add(empleado1);
         empleados.add(empleado2);
-        // Configuramos Mockito para devolver los empleados cuando se llama al método con el ID del centro
+
         when(empleadoService.getEmployeeByCenterId(101)).thenReturn(empleados);
-        // Configuramos Mockito para devolver el centro cuando se llama al método con el ID del centro
         when(centroService.getCenterByIdCenter(101)).thenReturn(centro);
 
-        // Act
         ResponseEntity<List<EmpleadoEntity>> response = empleadoController.getEmployeesByCenterId(101);
 
-        // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(2, response.getBody().size()); // Verifica que se devuelva una lista con al menos un empleado
+        assertEquals(2, response.getBody().size());
         assertEquals(empleados, response.getBody());
+    }
+
+    @Test
+    public void getEmployeesByCenterIdWhenEmployeeCenterDoesNotExistThenReturnsNotFoundTest() {
+
+        when(empleadoService.getEmployeeByCenterId(999)).thenReturn(null);
+        ResponseEntity<List<EmpleadoEntity>> response = empleadoController.getEmployeesByCenterId(null);
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        assertNull(response.getBody());
     }
 
 
 
 
-
     @Test
-    public void createEmpleado_When_EmpleadoIsValid_Returns_CreatedEmpleado() {
+    public void createEmployeeWhenEmployeeIsValidThenReturnsCreatedEmployeeTest() {
 
         EmpleadoEntity empleado = EmpleadoEntity.builder()
                 .idEmpleado(99)
@@ -123,75 +140,97 @@ public class EmpleadoControllerMockTest {
 
         when(empleadoService.createEmployee(empleado)).thenReturn(empleado);
 
-        // Act
         ResponseEntity<EmpleadoEntity> response = empleadoController.createEmployee(empleado, bindingResult);
 
-        // Assert
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(empleado, response.getBody());
     }
 
-    @Test
-    public void updateEmpleado_When_EmpleadoExists_Returns_UpdatedEmpleado() {
-        // Arrange
-        // Creamos un empleado con un ID y otros datos
-        EmpleadoEntity empleadoInicial = new EmpleadoEntity();
-        empleadoInicial.setIdEmpleado(99);
-        empleadoInicial.setNombre("NombreInicial");
+    /*
 
-        // Creamos un nuevo objeto empleado que representará el estado actualizado después de la llamada al método de servicio
-        EmpleadoEntity empleadoActualizado = new EmpleadoEntity();
-        empleadoActualizado.setIdEmpleado(99);
-        empleadoActualizado.setNombre("NombreActualizado");
+    @Test
+    public void createEmployeeWhenEmployeeIsInvalidThenReturnsBadRequestTest() {
+        EmpleadoEntity empleadoInvalido = EmpleadoEntity.builder()
+                .idEmpleado(99)
+                .idCentro(101)
+                .centro(CentroEntity.builder().build()).build();
+
+        BindingResult bindingResult = new BeanPropertyBindingResult(empleadoInvalido, "empleado");
+        bindingResult.reject("nombre", "El nombre del empleado es obligatorio");
+
+        when(empleadoService.createEmployee(empleadoInvalido)).thenThrow(new MockitoException("Empleado inválido"));
+
+        ResponseEntity<EmpleadoEntity> response = empleadoController.createEmployee(empleadoInvalido, bindingResult);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNull(response.getBody());
+    }
+
+*/
+    @Test
+    public void updateEmployeeWhenEmployeeExistsThenReturnsUpdatedEmployeeTest() {
+       EmpleadoEntity empleadoInicial = EmpleadoEntity.builder()
+               .idEmpleado(99)
+               .nombre("nombreInicial").build();
+
+        EmpleadoEntity empleadoActualizado = EmpleadoEntity.builder()
+                .idEmpleado(99)
+                .nombre("NombreActualizado").build();
 
         BindingResult bindingResult = new BeanPropertyBindingResult(empleadoInicial, "empleado");
 
-        // Configuramos Mockito para que devuelva el empleado actualizado cuando se llama al método de actualización con los parámetros correctos
         when(empleadoService.updateEmployee(99, empleadoInicial)).thenReturn(empleadoActualizado);
 
-        // Act
         ResponseEntity<EmpleadoEntity> response = empleadoController.updateEmployee(99, empleadoInicial, bindingResult);
 
-        // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(empleadoActualizado, response.getBody()); // Verificamos que el objeto devuelto sea el mismo que esperamos después de la actualización
-        verify(empleadoService).updateEmployee(99, empleadoInicial); // Verificamos que se llamó al método de actualización con los parámetros correctos
+        assertEquals(empleadoActualizado, response.getBody());
+        verify(empleadoService).updateEmployee(99, empleadoInicial);
     }
 
+    @Test
+    public void updateEmployeeWhenEmployeeDoesNotExistThenReturnsNotFoundTest() {
+        EmpleadoEntity empleadoInexistente = EmpleadoEntity.builder()
+                .idEmpleado(99)
+                .nombre("Empleado Inexistente").build();
+
+        when(empleadoService.updateEmployee(99, empleadoInexistente)).thenReturn(null);
+
+        BindingResult bindingResult = new BeanPropertyBindingResult(empleadoInexistente, "empleado");
+
+        ResponseEntity<EmpleadoEntity> response = empleadoController.updateEmployee(99, empleadoInexistente, bindingResult);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody());
+        verify(empleadoService).updateEmployee(99, empleadoInexistente);
+    }
 
     @Test
-    public void deleteEmpleado_When_EmpleadoExists_Returns_DeletedEmpleado() {
-        // Arrange
+    public void deleteEmployeeWhenEmployeeExistsThenReturnsDeletedEmployeeTest() {
         EmpleadoEntity empleado = new EmpleadoEntity();
 
-        // Configuramos Mockito para que devuelva el empleado que se eliminará cuando se llame al método deleteEmpleado
         when(empleadoService.deleteEmployee(1)).thenReturn(empleado);
 
-
-        // Act
         ResponseEntity<EmpleadoEntity> response = empleadoController.deleteEmployee(1);
 
-        // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(empleado, response.getBody()); // Verificamos que se devuelva el empleado eliminado
-
-        // Verificamos que el método deleteEmpleado fue llamado con el ID correcto
+        assertEquals(empleado, response.getBody());
         verify(empleadoService).deleteEmployee(1);
 
-        // Verificamos que el empleado haya sido eliminado correctamente
-        assertNull(empleadoService.getEmployeeById(1)); // Suponiendo que getEmpleadoById devuelve null cuando el empleado no existe
+        assertNull(empleadoService.getEmployeeById(1));
     }
 
 
     @Test
-    public void deleteEmpleado_When_EmpleadoDoesNotExist_Returns_NotFound() {
-        // Arrange
+    public void deleteEmployeeWhenEmployeeDoesNotExistThenReturnsNotFoundTest() {
         when(empleadoService.deleteEmployee(1)).thenReturn(null);
 
-        // Act
         ResponseEntity<EmpleadoEntity> response = empleadoController.deleteEmployee(1);
 
-        // Assert
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody());
+        verify(empleadoService).deleteEmployee(1);
+        assertNull(empleadoService.getEmployeeById(1));
     }
+
 }

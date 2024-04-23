@@ -1,7 +1,6 @@
 package es.ejemplo.primermicro.service;
 
 import es.ejemplo.primermicro.entity.EmpleadoEntity;
-
 import java.util.List;
 
 public interface EmpleadoService {

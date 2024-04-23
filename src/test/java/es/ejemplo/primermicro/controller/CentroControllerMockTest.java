@@ -9,10 +9,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
@@ -32,31 +30,29 @@ public class CentroControllerMockTest {
     }
 
     @Test
-    public void testGetCentroById_Exist() {
-        // Arrange
+    public void getCenterByIdWhenCenterExistsTest() {
 
         CentroEntity centroMock =  CentroEntity.builder()
-                .nombreCentro("ViewNext").numCentro(101).build();
+                .nombreCentro("ViewNext").
+                numCentro(101)
+                .build();
+
         when(centroService.getCenterByIdCenter(centroMock.getNumCentro())).thenReturn(centroMock);
 
-        // Act
+
         ResponseEntity<CentroEntity> response = centroController.getCenterById(centroMock.getNumCentro());
 
-        // Assert
         assertEquals(centroMock, response.getBody());
         assertEquals(ResponseEntity.ok(centroMock), response);
     }
 
     @Test
-    public void testGetCentroById_NotExist() {
-        // Arrange
+    public void getCenterByIdWhenCenterDoesNotExistTest() {
         Integer idCentro = 1;
         when(centroService.getCenterByIdCenter(idCentro)).thenReturn(null);
 
-        // Act
         ResponseEntity<CentroEntity> response = centroController.getCenterById(idCentro);
 
-        // Assert
         assertNull(response.getBody());
         assertEquals(ResponseEntity.notFound().build(), response);
     }
