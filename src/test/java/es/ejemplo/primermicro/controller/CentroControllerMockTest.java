@@ -37,7 +37,7 @@ public class CentroControllerMockTest {
 
         CentroEntity centroMock =  CentroEntity.builder()
                 .nombreCentro("ViewNext").numCentro(101).build();
-        when(centroService.getCentroById(centroMock.getNumCentro())).thenReturn(centroMock);
+        when(centroService.getCenterByIdCenter(centroMock.getNumCentro())).thenReturn(centroMock);
 
         // Act
         ResponseEntity<CentroEntity> response = centroController.getCenterById(centroMock.getNumCentro());
@@ -51,7 +51,7 @@ public class CentroControllerMockTest {
     public void testGetCentroById_NotExist() {
         // Arrange
         Integer idCentro = 1;
-        when(centroService.getCentroById(idCentro)).thenReturn(null);
+        when(centroService.getCenterByIdCenter(idCentro)).thenReturn(null);
 
         // Act
         ResponseEntity<CentroEntity> response = centroController.getCenterById(idCentro);

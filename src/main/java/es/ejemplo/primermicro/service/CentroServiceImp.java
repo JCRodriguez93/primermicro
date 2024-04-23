@@ -12,7 +12,7 @@ public class CentroServiceImp implements CentroService{
 
     private final CentroRepository centroRepository;
     @Override
-    public CentroEntity getCentroById(Integer id) {
+    public CentroEntity getCenterByIdCenter(Integer id) {
         return centroRepository.findByNumCentro(id);
     }
 }

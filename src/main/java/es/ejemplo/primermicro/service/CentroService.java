@@ -5,5 +5,5 @@ import es.ejemplo.primermicro.entity.CentroEntity;
 
 public interface CentroService {
 
-    CentroEntity getCentroById(Integer id);
+    CentroEntity getCenterByIdCenter(Integer id);
 }

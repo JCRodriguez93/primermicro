@@ -14,9 +14,9 @@ public class CentroController {
     @Autowired
     private CentroService centroService;
 
-    @GetMapping(value = "/{idCentro}") 
+    @GetMapping(value = "/{idCentro}")
     public ResponseEntity<CentroEntity> getCenterById(@PathVariable("idCentro") Integer idCentro){
-        CentroEntity centro = centroService.getCentroById(idCentro);
+        CentroEntity centro = centroService.getCenterByIdCenter(idCentro);
         if(centro == null){
             return ResponseEntity.notFound().build();
         }

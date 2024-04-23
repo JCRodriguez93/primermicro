@@ -18,34 +18,34 @@ public class EmpleadoServiceImp implements EmpleadoService {
 
 
     @Override
-    public List<EmpleadoEntity> listAllEmpleados() {
+    public List<EmpleadoEntity> listAllEmployees() {
         return empleadoRepository.findAll();
     }
 
     @Override
-    public EmpleadoEntity getEmpleadoById(Integer id) {
+    public EmpleadoEntity getEmployeeById(Integer id) {
         return empleadoRepository.findById(id).orElse(null);
     }
 
     @Override
-    public List<EmpleadoEntity> getEmpleadoByNombre(String nombre) {
+    public List<EmpleadoEntity> getEmployeeByName(String nombre) {
         return empleadoRepository.findByNombre(nombre).stream().toList();
 
     }
 
     @Override
-    public List<EmpleadoEntity> getEmpleadoByIdCentro(Integer id) {
+    public List<EmpleadoEntity> getEmployeeByCenterId(Integer id) {
         return empleadoRepository.findByIdCentro(id);
     }
 
     @Override
-    public EmpleadoEntity createEmpleado(EmpleadoEntity empleado) {
+    public EmpleadoEntity createEmployee(EmpleadoEntity empleado) {
         return empleadoRepository.save(empleado);
     }
 
     @Override
     @Transactional
-    public EmpleadoEntity updateEmpleado(Integer id, EmpleadoEntity empleado) {
+    public EmpleadoEntity updateEmployee(Integer id, EmpleadoEntity empleado) {
         Optional<EmpleadoEntity> empleadoDB = empleadoRepository.findById(id);
         if (empleadoDB == null) {
             return null;
@@ -56,8 +56,8 @@ public class EmpleadoServiceImp implements EmpleadoService {
     }
 
     @Override
-    public EmpleadoEntity deleteEmpleado(Integer id) {
-        EmpleadoEntity empleadoDB = getEmpleadoById(id);
+    public EmpleadoEntity deleteEmployee(Integer id) {
+        EmpleadoEntity empleadoDB = getEmployeeById(id);
         if (empleadoDB == null) {
             return null;
         }

@@ -6,19 +6,19 @@ import java.util.List;
 
 public interface EmpleadoService {
 
-    public List<EmpleadoEntity> listAllEmpleados();
+    public List<EmpleadoEntity> listAllEmployees();
 
-    public EmpleadoEntity getEmpleadoById(Integer id);
+    public EmpleadoEntity getEmployeeById(Integer id);
 
-    public List<EmpleadoEntity> getEmpleadoByNombre(String nombre);
+    public List<EmpleadoEntity> getEmployeeByName(String nombre);
 
-    public List<EmpleadoEntity> getEmpleadoByIdCentro(Integer id);
+    public List<EmpleadoEntity> getEmployeeByCenterId(Integer id);
 
-    public EmpleadoEntity createEmpleado(EmpleadoEntity empleado);
+    public EmpleadoEntity createEmployee(EmpleadoEntity empleado);
 
-    public EmpleadoEntity updateEmpleado(Integer id, EmpleadoEntity empleado);
+    public EmpleadoEntity updateEmployee(Integer id, EmpleadoEntity empleado);
 
-    public EmpleadoEntity deleteEmpleado(Integer id);
+    public EmpleadoEntity deleteEmployee(Integer id);
 
 
 }

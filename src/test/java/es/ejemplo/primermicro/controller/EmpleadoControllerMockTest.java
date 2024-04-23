@@ -40,7 +40,7 @@ public class EmpleadoControllerMockTest {
         empleados.add(new EmpleadoEntity());
         empleados.add(new EmpleadoEntity());
 
-        when(empleadoService.listAllEmpleados()).thenReturn(empleados);
+        when(empleadoService.listAllEmployees()).thenReturn(empleados);
 
         ResponseEntity<List<EmpleadoEntity>> response = empleadoController.getAllEmployees();
 
@@ -51,7 +51,7 @@ public class EmpleadoControllerMockTest {
     @Test
     public void getEmpleadosById_When_EmpleadoExists_Returns_Empleado() {
         EmpleadoEntity empleado = new EmpleadoEntity();
-        when(empleadoService.getEmpleadoById(1)).thenReturn(empleado);
+        when(empleadoService.getEmployeeById(1)).thenReturn(empleado);
 
         ResponseEntity<EmpleadoEntity> response = empleadoController.getEmployeesById(1);
 
@@ -72,7 +72,7 @@ public class EmpleadoControllerMockTest {
         empleados.add(empleado2);
         empleados.add(empleado3);
 
-        when(empleadoService.getEmpleadoByNombre("Juan")).thenReturn(empleados);
+        when(empleadoService.getEmployeeByName("Juan")).thenReturn(empleados);
 
         ResponseEntity<List<EmpleadoEntity>> response = empleadoController.getEmployeesByName("Juan");
 
@@ -93,9 +93,9 @@ public class EmpleadoControllerMockTest {
         empleados.add(empleado1); // Puedes agregar más empleados si es necesario
         empleados.add(empleado2);
         // Configuramos Mockito para devolver los empleados cuando se llama al método con el ID del centro
-        when(empleadoService.getEmpleadoByIdCentro(101)).thenReturn(empleados);
+        when(empleadoService.getEmployeeByCenterId(101)).thenReturn(empleados);
         // Configuramos Mockito para devolver el centro cuando se llama al método con el ID del centro
-        when(centroService.getCentroById(101)).thenReturn(centro);
+        when(centroService.getCenterByIdCenter(101)).thenReturn(centro);
 
         // Act
         ResponseEntity<List<EmpleadoEntity>> response = empleadoController.getEmployeesByCenterId(101);
@@ -121,7 +121,7 @@ public class EmpleadoControllerMockTest {
 
         BindingResult bindingResult = new BeanPropertyBindingResult(empleado, "empleado");
 
-        when(empleadoService.createEmpleado(empleado)).thenReturn(empleado);
+        when(empleadoService.createEmployee(empleado)).thenReturn(empleado);
 
         // Act
         ResponseEntity<EmpleadoEntity> response = empleadoController.createEmployee(empleado, bindingResult);
@@ -147,7 +147,7 @@ public class EmpleadoControllerMockTest {
         BindingResult bindingResult = new BeanPropertyBindingResult(empleadoInicial, "empleado");
 
         // Configuramos Mockito para que devuelva el empleado actualizado cuando se llama al método de actualización con los parámetros correctos
-        when(empleadoService.updateEmpleado(99, empleadoInicial)).thenReturn(empleadoActualizado);
+        when(empleadoService.updateEmployee(99, empleadoInicial)).thenReturn(empleadoActualizado);
 
         // Act
         ResponseEntity<EmpleadoEntity> response = empleadoController.updateEmployee(99, empleadoInicial, bindingResult);
@@ -155,7 +155,7 @@ public class EmpleadoControllerMockTest {
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(empleadoActualizado, response.getBody()); // Verificamos que el objeto devuelto sea el mismo que esperamos después de la actualización
-        verify(empleadoService).updateEmpleado(99, empleadoInicial); // Verificamos que se llamó al método de actualización con los parámetros correctos
+        verify(empleadoService).updateEmployee(99, empleadoInicial); // Verificamos que se llamó al método de actualización con los parámetros correctos
     }
 
 
@@ -165,7 +165,7 @@ public class EmpleadoControllerMockTest {
         EmpleadoEntity empleado = new EmpleadoEntity();
 
         // Configuramos Mockito para que devuelva el empleado que se eliminará cuando se llame al método deleteEmpleado
-        when(empleadoService.deleteEmpleado(1)).thenReturn(empleado);
+        when(empleadoService.deleteEmployee(1)).thenReturn(empleado);
 
 
         // Act
@@ -176,17 +176,17 @@ public class EmpleadoControllerMockTest {
         assertEquals(empleado, response.getBody()); // Verificamos que se devuelva el empleado eliminado
 
         // Verificamos que el método deleteEmpleado fue llamado con el ID correcto
-        verify(empleadoService).deleteEmpleado(1);
+        verify(empleadoService).deleteEmployee(1);
 
         // Verificamos que el empleado haya sido eliminado correctamente
-        assertNull(empleadoService.getEmpleadoById(1)); // Suponiendo que getEmpleadoById devuelve null cuando el empleado no existe
+        assertNull(empleadoService.getEmployeeById(1)); // Suponiendo que getEmpleadoById devuelve null cuando el empleado no existe
     }
 
 
     @Test
     public void deleteEmpleado_When_EmpleadoDoesNotExist_Returns_NotFound() {
         // Arrange
-        when(empleadoService.deleteEmpleado(1)).thenReturn(null);
+        when(empleadoService.deleteEmployee(1)).thenReturn(null);
 
         // Act
         ResponseEntity<EmpleadoEntity> response = empleadoController.deleteEmployee(1);

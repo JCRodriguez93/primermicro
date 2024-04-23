@@ -45,7 +45,7 @@ public class EmpleadoServiceMockTest {
     }
     @Test
     public void whenValidGetIdThenReturnEmployee() {
-        EmpleadoEntity encontrado = empleadoService.getEmpleadoById(1);
+        EmpleadoEntity encontrado = empleadoService.getEmployeeById(1);
         Assertions.assertThat(encontrado.getNombre()).isEqualTo("Margarita");
     }
     @Test
@@ -60,7 +60,7 @@ public class EmpleadoServiceMockTest {
                 .build();
 
 
-        Mockito.when(empleadoService.createEmpleado(empleadoEntity)).thenReturn(empleadoEntity);
+        Mockito.when(empleadoService.createEmployee(empleadoEntity)).thenReturn(empleadoEntity);
 
         assertNotNull(empleadoEntity, "El empleado creado no debería ser nulo");
         assertEquals(1, empleadoEntity.getIdEmpleado(), "El ID del empleado creado no coincide con el esperado");
@@ -87,7 +87,7 @@ public class EmpleadoServiceMockTest {
         empleadoRepository.save(empleadoEntity);
 
         // Act: Eliminar al empleado
-        empleadoService.deleteEmpleado(empleadoEntity.getIdEmpleado());
+        empleadoService.deleteEmployee(empleadoEntity.getIdEmpleado());
 
         // Assert: Verificar que el empleado ya no existe en la base de datos
         assertFalse(empleadoRepository.existsById(1), "El empleado debería haber sido eliminado correctamente de la base de datos");
@@ -97,14 +97,14 @@ public class EmpleadoServiceMockTest {
     @Test
     public void updateNameAndIdCenterOfEmployeeWhenIdProvided() {
 
-        EmpleadoEntity actual = empleadoService.getEmpleadoById(1);
-        EmpleadoEntity empleadoActualizado = empleadoService.getEmpleadoById(1);
+        EmpleadoEntity actual = empleadoService.getEmployeeById(1);
+        EmpleadoEntity empleadoActualizado = empleadoService.getEmployeeById(1);
 
         empleadoActualizado.setIdEmpleado(actual.getIdEmpleado());
         empleadoActualizado.setNombre("Juan");
         empleadoActualizado.setIdCentro(102);
 
-        empleadoService.updateEmpleado(empleadoActualizado.getIdEmpleado(), empleadoActualizado);
+        empleadoService.updateEmployee(empleadoActualizado.getIdEmpleado(), empleadoActualizado);
 
         assertNotNull(empleadoActualizado);
         assertEquals("Juan", empleadoActualizado.getNombre(), "El nombre del empleado no se actualizó correctamente");

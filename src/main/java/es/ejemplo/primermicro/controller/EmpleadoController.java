@@ -25,7 +25,7 @@ public class EmpleadoController {
     @GetMapping
     public ResponseEntity<List<EmpleadoEntity>> getAllEmployees() {
 
-        List<EmpleadoEntity> listaEmpleados = empleadoService.listAllEmpleados();
+        List<EmpleadoEntity> listaEmpleados = empleadoService.listAllEmployees();
 
         if (listaEmpleados.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -36,7 +36,7 @@ public class EmpleadoController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<EmpleadoEntity> getEmployeesById(@PathVariable("id") Integer id) {
 
-        EmpleadoEntity empleadoEntity = empleadoService.getEmpleadoById(id);
+        EmpleadoEntity empleadoEntity = empleadoService.getEmployeeById(id);
 
         if (empleadoEntity == null) {
             return ResponseEntity.notFound().build();
@@ -48,7 +48,7 @@ public class EmpleadoController {
     public ResponseEntity<List<EmpleadoEntity>> getEmployeesByName(@PathVariable("nombre") String nombre) {
 
 
-        List<EmpleadoEntity> listaEmpleados = empleadoService.getEmpleadoByNombre(nombre);
+        List<EmpleadoEntity> listaEmpleados = empleadoService.getEmployeeByName(nombre);
 
         if (listaEmpleados.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -58,7 +58,7 @@ public class EmpleadoController {
     @GetMapping(value = "/centro/{idCentro}")
     public ResponseEntity<List<EmpleadoEntity>> getEmployeesByCenterId(@PathVariable("idCentro") Integer idCentro) {
 
-        List<EmpleadoEntity> listaEmpleados = empleadoService.getEmpleadoByIdCentro(idCentro);
+        List<EmpleadoEntity> listaEmpleados = empleadoService.getEmployeeByCenterId(idCentro);
 
         if (listaEmpleados.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -71,7 +71,7 @@ public class EmpleadoController {
         if (result.hasErrors()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid employee data");
         }
-        EmpleadoEntity empleadoCreated = empleadoService.createEmpleado(empleadoEntity);
+        EmpleadoEntity empleadoCreated = empleadoService.createEmployee(empleadoEntity);
         return ResponseEntity.status(HttpStatus.CREATED).body(empleadoCreated);
     }
 
@@ -81,7 +81,7 @@ public class EmpleadoController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         empleadoEntity.setIdEmpleado(id);
-        EmpleadoEntity empleadoDB = empleadoService.updateEmpleado(id, empleadoEntity);
+        EmpleadoEntity empleadoDB = empleadoService.updateEmployee(id, empleadoEntity);
         if (empleadoDB == null) {
             return ResponseEntity.notFound().build();
 
@@ -94,7 +94,7 @@ public class EmpleadoController {
     public ResponseEntity<EmpleadoEntity> deleteEmployee(@PathVariable("id") Integer id) {
 
 
-        EmpleadoEntity empleadoDeleted = empleadoService.deleteEmpleado(id);
+        EmpleadoEntity empleadoDeleted = empleadoService.deleteEmployee(id);
         if (empleadoDeleted == null) {
             return ResponseEntity.notFound().build();
         }
