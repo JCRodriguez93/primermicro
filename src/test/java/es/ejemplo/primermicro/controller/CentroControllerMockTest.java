@@ -8,7 +8,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
@@ -28,6 +34,34 @@ public class CentroControllerMockTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
     }
+
+
+    @Test
+    public void getAllCentersIfExistTest() {
+        List<CentroEntity> centrosMock = new ArrayList<>();
+        centrosMock.add(new CentroEntity(1, "Centro A"));
+        centrosMock.add(new CentroEntity(2, "Centro B"));
+
+        when(centroService.getAllCenters()).thenReturn(centrosMock);
+        ResponseEntity<List<CentroEntity>> response = centroController.getAllCenters();
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(centrosMock, response.getBody());
+        assertEquals(2, Objects.requireNonNull(response.getBody()).size());
+
+    }
+
+    @Test
+    public void getAllCentersIfNotExistTest() {
+        List<CentroEntity> centrosMock = new ArrayList<>();
+        when(centroService.getAllCenters()).thenReturn(centrosMock);
+
+        ResponseEntity<List<CentroEntity>> response = centroController.getAllCenters();
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        assertNull(response.getBody());
+    }
+
+
 
     @Test
     public void getCenterByIdWhenCenterExistsTest() {

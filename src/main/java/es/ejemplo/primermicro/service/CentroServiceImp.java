@@ -5,6 +5,8 @@ import es.ejemplo.primermicro.repository.CentroRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -14,5 +16,10 @@ public class CentroServiceImp implements CentroService{
     @Override
     public CentroEntity getCenterByIdCenter(Integer id) {
         return centroRepository.findByNumCentro(id);
+    }
+
+    @Override
+    public List<CentroEntity> getAllCenters() {
+        return centroRepository.findAll();
     }
 }
