@@ -42,7 +42,7 @@ public class EmpleadoControllerMockTest {
 
         when(empleadoService.listAllEmpleados()).thenReturn(empleados);
 
-        ResponseEntity<List<EmpleadoEntity>> response = empleadoController.getAllEmpleados();
+        ResponseEntity<List<EmpleadoEntity>> response = empleadoController.getAllEmployees();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(2, response.getBody().size());
@@ -53,7 +53,7 @@ public class EmpleadoControllerMockTest {
         EmpleadoEntity empleado = new EmpleadoEntity();
         when(empleadoService.getEmpleadoById(1)).thenReturn(empleado);
 
-        ResponseEntity<EmpleadoEntity> response = empleadoController.getEmpleadosById(1);
+        ResponseEntity<EmpleadoEntity> response = empleadoController.getEmployeesById(1);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(empleado, response.getBody());
@@ -74,7 +74,7 @@ public class EmpleadoControllerMockTest {
 
         when(empleadoService.getEmpleadoByNombre("Juan")).thenReturn(empleados);
 
-        ResponseEntity<List<EmpleadoEntity>> response = empleadoController.getEmpleadosByNombre("Juan");
+        ResponseEntity<List<EmpleadoEntity>> response = empleadoController.getEmployeesByName("Juan");
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(3, response.getBody().size()); // Verifica que se devuelva una lista con al menos un empleado
@@ -98,7 +98,7 @@ public class EmpleadoControllerMockTest {
         when(centroService.getCentroById(101)).thenReturn(centro);
 
         // Act
-        ResponseEntity<List<EmpleadoEntity>> response = empleadoController.getEmpleadosByIdCentro(101);
+        ResponseEntity<List<EmpleadoEntity>> response = empleadoController.getEmployeesByCenterId(101);
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -112,15 +112,19 @@ public class EmpleadoControllerMockTest {
 
     @Test
     public void createEmpleado_When_EmpleadoIsValid_Returns_CreatedEmpleado() {
-        // Arrange
-        CentroEntity centro = new CentroEntity();
-        EmpleadoEntity empleado = new EmpleadoEntity(99,"Juan",101, centro);
+
+        EmpleadoEntity empleado = EmpleadoEntity.builder()
+                .idEmpleado(99)
+                .nombre("Juan")
+                .idCentro(101)
+                .centro(CentroEntity.builder().build()).build();
+
         BindingResult bindingResult = new BeanPropertyBindingResult(empleado, "empleado");
 
         when(empleadoService.createEmpleado(empleado)).thenReturn(empleado);
 
         // Act
-        ResponseEntity<EmpleadoEntity> response = empleadoController.createEmpleado(empleado, bindingResult);
+        ResponseEntity<EmpleadoEntity> response = empleadoController.createEmployee(empleado, bindingResult);
 
         // Assert
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -146,7 +150,7 @@ public class EmpleadoControllerMockTest {
         when(empleadoService.updateEmpleado(99, empleadoInicial)).thenReturn(empleadoActualizado);
 
         // Act
-        ResponseEntity<EmpleadoEntity> response = empleadoController.updateEmpleado(99, empleadoInicial, bindingResult);
+        ResponseEntity<EmpleadoEntity> response = empleadoController.updateEmployee(99, empleadoInicial, bindingResult);
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -165,7 +169,7 @@ public class EmpleadoControllerMockTest {
 
 
         // Act
-        ResponseEntity<EmpleadoEntity> response = empleadoController.deleteEmpleado(1);
+        ResponseEntity<EmpleadoEntity> response = empleadoController.deleteEmployee(1);
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -185,7 +189,7 @@ public class EmpleadoControllerMockTest {
         when(empleadoService.deleteEmpleado(1)).thenReturn(null);
 
         // Act
-        ResponseEntity<EmpleadoEntity> response = empleadoController.deleteEmpleado(1);
+        ResponseEntity<EmpleadoEntity> response = empleadoController.deleteEmployee(1);
 
         // Assert
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());

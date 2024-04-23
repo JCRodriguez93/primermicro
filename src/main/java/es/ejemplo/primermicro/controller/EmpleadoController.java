@@ -23,7 +23,7 @@ public class EmpleadoController {
     private CentroService centroService;
 
     @GetMapping
-    public ResponseEntity<List<EmpleadoEntity>> getAllEmpleados() {
+    public ResponseEntity<List<EmpleadoEntity>> getAllEmployees() {
 
         List<EmpleadoEntity> listaEmpleados = empleadoService.listAllEmpleados();
 
@@ -34,7 +34,7 @@ public class EmpleadoController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<EmpleadoEntity> getEmpleadosById(@PathVariable("id") Integer id) {
+    public ResponseEntity<EmpleadoEntity> getEmployeesById(@PathVariable("id") Integer id) {
 
         EmpleadoEntity empleadoEntity = empleadoService.getEmpleadoById(id);
 
@@ -45,7 +45,7 @@ public class EmpleadoController {
     }
 
     @GetMapping(value = "/nombre/{nombre}")
-    public ResponseEntity<List<EmpleadoEntity>> getEmpleadosByNombre(@PathVariable("nombre") String nombre) {
+    public ResponseEntity<List<EmpleadoEntity>> getEmployeesByName(@PathVariable("nombre") String nombre) {
 
 
         List<EmpleadoEntity> listaEmpleados = empleadoService.getEmpleadoByNombre(nombre);
@@ -56,7 +56,7 @@ public class EmpleadoController {
         return ResponseEntity.ok(listaEmpleados);
     }
     @GetMapping(value = "/centro/{idCentro}")
-    public ResponseEntity<List<EmpleadoEntity>> getEmpleadosByIdCentro(@PathVariable("idCentro") Integer idCentro) {
+    public ResponseEntity<List<EmpleadoEntity>> getEmployeesByCenterId(@PathVariable("idCentro") Integer idCentro) {
 
         List<EmpleadoEntity> listaEmpleados = empleadoService.getEmpleadoByIdCentro(idCentro);
 
@@ -67,7 +67,7 @@ public class EmpleadoController {
     }
 
     @PostMapping
-    public ResponseEntity<EmpleadoEntity> createEmpleado(@Valid @RequestBody EmpleadoEntity empleadoEntity, BindingResult result) {
+    public ResponseEntity<EmpleadoEntity> createEmployee(@Valid @RequestBody EmpleadoEntity empleadoEntity, BindingResult result) {
         if (result.hasErrors()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid employee data");
         }
@@ -76,7 +76,7 @@ public class EmpleadoController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<EmpleadoEntity> updateEmpleado(@Valid @PathVariable("id") Integer id, @RequestBody EmpleadoEntity empleadoEntity, BindingResult result) {
+    public ResponseEntity<EmpleadoEntity> updateEmployee(@Valid @PathVariable("id") Integer id, @RequestBody EmpleadoEntity empleadoEntity, BindingResult result) {
         if (result.hasErrors()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
@@ -91,7 +91,7 @@ public class EmpleadoController {
 
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<EmpleadoEntity> deleteEmpleado(@PathVariable("id") Integer id) {
+    public ResponseEntity<EmpleadoEntity> deleteEmployee(@PathVariable("id") Integer id) {
 
 
         EmpleadoEntity empleadoDeleted = empleadoService.deleteEmpleado(id);

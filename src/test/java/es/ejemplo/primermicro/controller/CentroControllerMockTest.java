@@ -1,22 +1,14 @@
 package es.ejemplo.primermicro.controller;
 
 import es.ejemplo.primermicro.entity.CentroEntity;
-import es.ejemplo.primermicro.entity.EmpleadoEntity;
 import es.ejemplo.primermicro.service.CentroService;
-import es.ejemplo.primermicro.service.EmpleadoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindingResult;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -48,7 +40,7 @@ public class CentroControllerMockTest {
         when(centroService.getCentroById(centroMock.getNumCentro())).thenReturn(centroMock);
 
         // Act
-        ResponseEntity<CentroEntity> response = centroController.getCentroById(centroMock.getNumCentro());
+        ResponseEntity<CentroEntity> response = centroController.getCenterById(centroMock.getNumCentro());
 
         // Assert
         assertEquals(centroMock, response.getBody());
@@ -62,7 +54,7 @@ public class CentroControllerMockTest {
         when(centroService.getCentroById(idCentro)).thenReturn(null);
 
         // Act
-        ResponseEntity<CentroEntity> response = centroController.getCentroById(idCentro);
+        ResponseEntity<CentroEntity> response = centroController.getCenterById(idCentro);
 
         // Assert
         assertNull(response.getBody());
