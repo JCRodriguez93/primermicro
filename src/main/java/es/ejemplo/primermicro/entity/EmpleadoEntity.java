@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 
+
 @Validated
 @Entity
 @Table(name = "EMPLEADOS")
