@@ -34,6 +34,78 @@ El microservicio utiliza los siguientes códigos de estado HTTP:
 - `400 Bad Request`: La solicitud no se pudo procesar debido a un error de cliente (por ejemplo, datos de empleado inválidos).
 - `404 Not Found`: El recurso solicitado no se encontró (por ejemplo, empleado o centro no existente).
 
+### Base de Datos H2 de Ejemplo
+
+El microservicio utiliza una base de datos H2 embebida para almacenar la información sobre los empleados y centros. A continuación se muestra la estructura de la base de datos y los registros de ejemplo:
+
+#### Estructura de la Base de Datos
+
+La base de datos consta de dos tablas: `CENTROS` y `EMPLEADOS`.
+
+- **Tabla CENTROS**:
+  - `NUM_CENTRO`: Identificador único del centro.
+  - `NOMBRE_CENTRO`: Nombre del centro.
+
+- **Tabla EMPLEADOS**:
+  - `ID_EMPLEADO`: Identificador único del empleado.
+  - `NOMBRE`: Nombre del empleado.
+  - `ID_CENTRO`: Identificador del centro al que pertenece el empleado (clave externa que referencia a la tabla `CENTROS`).
+
+#### Script de Creación de la Base de Datos
+
+El script `schema.sql` define la estructura de las tablas en la base de datos H2:
+
+```sql
+DROP TABLE IF EXISTS EMPLEADOS;
+DROP TABLE IF EXISTS  CENTROS;
+
+CREATE TABLE CENTROS (
+    NUM_CENTRO INT PRIMARY KEY,
+    NOMBRE_CENTRO VARCHAR(100)
+);
+
+CREATE TABLE EMPLEADOS (
+    ID_EMPLEADO INT PRIMARY KEY,
+    NOMBRE VARCHAR(100),
+    ID_CENTRO INT,
+    FOREIGN KEY (ID_CENTRO) REFERENCES CENTROS(NUM_CENTRO)
+);
+```
+El script `data.sql` contiene los registros de ejemplo que se insertarán en las tablas CENTROS y EMPLEADOS:
+
+```sql
+INSERT INTO CENTROS (NUM_CENTRO, NOMBRE_CENTRO)
+VALUES
+(101, 'ViewNext'),
+(102, 'Indra'),
+(103, 'Microsoft'),
+(104, 'Accenture'),
+(105, 'Capgemini'),
+(106, 'Tata Consultancy Services'),
+(107, 'Wipro'),
+(108, 'Infosys'),
+(109, 'Cognizant'),
+(110, 'IBM');
+
+INSERT INTO EMPLEADOS (ID_EMPLEADO, NOMBRE, ID_CENTRO)
+VALUES
+(1, 'Juan', 101),
+(2, 'Ahmed Mohammed', 106),
+(3, 'Yuki Tanaka', 104),
+(4, 'Juan García', 103),
+(5, 'María López', 108),
+(6, 'Mohammed Ahmed', 104),
+(7, 'David Rodríguez', 102),
+(8, 'Laura Martínez', 101),
+(9, 'Fatima Ahmed', 108),
+(10, 'Takashi Suzuki', 106),
+(11, 'Sara García', 106),
+(12, 'Hiroshi Tanaka', 103),
+(13, 'Rosa Pérez', 108),
+(14, 'Yong Chen', 105);
+
+```
+
 ### Tecnologías Utilizadas
 
 El microservicio está desarrollado utilizando Java y Spring Boot. Se utiliza validación de datos con anotaciones de Bean Validation (`@Valid`) y se manejan errores de validación y otras excepciones mediante el lanzamiento de `ResponseStatusException` para devolver códigos de estado HTTP adecuados.
